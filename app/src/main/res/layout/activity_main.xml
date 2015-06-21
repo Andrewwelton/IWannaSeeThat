@@ -23,13 +23,6 @@
 
     </RelativeLayout>
 
-    <fragment
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:id="@+id/fragment_navigation_drawer"
-        app:layout="@layout/fragment_navigation_drawer"
-        android:name="me.andrewwelton.iwannaseethat.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer"></fragment>
+
 
 </android.support.v4.widget.DrawerLayout>
