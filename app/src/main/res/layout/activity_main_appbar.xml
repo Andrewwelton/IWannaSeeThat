@@ -26,6 +26,12 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/drawer_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

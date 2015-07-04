@@ -10,11 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView drawer;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private RecyclerView recyclerView;
+    private NavListAdapter navListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +52,25 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.setFitsSystemWindows(false);
             drawer.setFitsSystemWindows(false);
         }
+        recyclerView = (RecyclerView) findViewById(R.id.drawer_list);
+        navListAdapter = new NavListAdapter(this, getData());
+        recyclerView.setAdapter(navListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
+
+
+    public static List<Info> getData() {
+        List<Info> data = new ArrayList();
+        int[] icons = {R.drawable.abc_ab_share_pack_mtrl_alpha, R.drawable.abc_list_focused_holo, R.drawable.abc_list_focused_holo,R.drawable.abc_list_focused_holo};
+        String[] titles = {"My Movies", "Upcoming", "Placeholder", "Placeholder"};
+        for(int i = 0; i < titles.length && i < icons.length; i++) {
+            Info current = new Info();
+            current.iconID = icons[i];
+            current.title = titles[i];
+            data.add(current);
+        }
+        return data;
     }
 
     @Override
