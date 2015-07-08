@@ -9,9 +9,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.droidparts.util.Strings;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import me.andrewwelton.iwannaseethat.network.VolleySingleton;
 
 
 public class SearchResultsActivity extends ActionBarActivity {
+
+    private VolleySingleton volleySingleton;
+    private RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +48,44 @@ public class SearchResultsActivity extends ActionBarActivity {
         handleIntent(getIntent());
     }
 
+    public static String getRequestURL(String query) {
+        String encoded = Strings.urlEncode(query);
+        return ApplicationClass.API_MOVIE_SEARCH + "?api_key=" + ApplicationClass.API_KEY_TMDB + "&query=" + encoded;
+    }
+
     private void handleIntent(Intent intent) {
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            volleySingleton = VolleySingleton.getsInstance();
+            requestQueue = volleySingleton.getRequestQueue();
             String query = intent.getStringExtra(SearchManager.QUERY);
-            TextView textView = (TextView) findViewById(R.id.search_query);
-            textView.setText(query);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestURL(query), (String)null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    parseJSONResponse(response);
+                    // Toast.makeText(ApplicationClass.getAppContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            requestQueue.add(request);
+        }
+    }
+
+    private void parseJSONResponse(JSONObject response) {
+        if(response == null || response.length() == 0) { return; }
+        try {
+            if (response.has("results")) {
+                JSONArray resultsArray = response.getJSONArray("results");
+                for(int i = 0; i < resultsArray.length(); i++) {
+                    JSONObject currentResult = resultsArray.getJSONObject(i);
+                    
+                }
+            }
+        } catch (JSONException e) {
+            // results no good
         }
     }
 
