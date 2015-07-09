@@ -9,23 +9,23 @@
 
     <ImageView
         android:id="@+id/movie_thumbnail"
-        android:layout_width="54dp"
-        android:layout_height="80dp"
-        android:layout_centerVertical="true" />
+        android:layout_width="80dp"
+        android:layout_height="120dp" />
 
     <TextView
         android:id="@+id/movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/movie_thumbnail"
-        android:layout_marginLeft="56dp"
         android:alpha="0.87"
         android:gravity="right"
         android:padding="10dp"
-        android:textSize="10dp"
-        android:text="Hello World"/>
+        android:textSize="20dp"
+        android:text="Hello World"
+        android:textIsSelectable="false"
+        android:layout_toRightOf="@+id/movie_thumbnail"
+        android:layout_toEndOf="@+id/movie_thumbnail" />
 
     <TextView
         android:id="@+id/movie_release_date"
@@ -35,5 +35,5 @@
         android:layout_below="@id/movie_title"
         android:alpha="0.87"
         android:padding="10dp"
-        android:textSize="5dp" />
+        android:textSize="15dp" />
 </RelativeLayout>
