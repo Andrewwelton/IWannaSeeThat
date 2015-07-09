@@ -32,7 +32,7 @@ public class VolleySingleton {
             }
         });
     }
-    public static VolleySingleton getsInstance() {
+    public static VolleySingleton getInstance() {
         if(sInstance == null) {
             sInstance = new VolleySingleton();
         }

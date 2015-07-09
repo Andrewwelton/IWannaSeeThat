@@ -33,4 +33,26 @@ public class Movie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    private String posterImage;
+
+    public String getPosterImage() {
+        return posterImage;
+    }
+
+    public void setPosterImage(String posterImage) {
+        this.posterImage = posterImage;
+    }
+
+    public Movie(String overview, String title, String releaseDate, String posterImage) {
+        this.overview = overview;
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.posterImage = posterImage;
+    }
+
+    public String toString() {
+        return "TITLE: " + this.title + "OVERVIEW: " + this.overview + "RELEASE: " + this.releaseDate + "POSTER: " + this.posterImage;
+    }
+
 }
