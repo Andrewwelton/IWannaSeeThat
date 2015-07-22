@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.otto.Bus;
 
 import org.droidparts.util.Strings;
 import org.json.JSONArray;
@@ -56,10 +57,14 @@ public class SearchResultsActivity extends ActionBarActivity {
         movieSearchResults.setAdapter(searchResultsAdapter);
         movieSearchResults.setLayoutManager(new LinearLayoutManager(this));
 
+
         movieSearchResults.addOnItemTouchListener(new RecyclerTouchListener(this, movieSearchResults, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                Movie selectedMovie = searchResultsAdapter.getMovieAtIndex(position);
+                Intent intent = new Intent(SearchResultsActivity.this, MovieSelected.class);
+                intent.putExtra("selected", selectedMovie);
+                startActivity(intent);
             }
 
             @Override
@@ -113,7 +118,8 @@ public class SearchResultsActivity extends ActionBarActivity {
                     String title = currentResult.getString("title");
                     String releaseDate = currentResult.getString("release_date");
                     String imagePath = currentResult.getString("poster_path");
-                    Movie newMovie = new Movie(overview, title, releaseDate, imagePath);
+                    String backdropImage = currentResult.getString("backdrop_path");
+                    Movie newMovie = new Movie(overview, title, releaseDate, imagePath, backdropImage);
                     movieResultList.add(newMovie);
                 }
             }
@@ -193,5 +199,12 @@ public class SearchResultsActivity extends ActionBarActivity {
     public static interface ClickListener {
         public void onClick(View view, int position);
         public void OnLongClick(View view, int position);
+    }
+
+    class MovieSelectedEvent {
+        public Movie selectedMovie;
+        public MovieSelectedEvent(Movie movie) {
+            this.selectedMovie = movie;
+        }
     }
 }

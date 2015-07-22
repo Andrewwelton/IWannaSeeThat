@@ -74,6 +74,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return movieList.size();
     }
 
+    public Movie getMovieAtIndex(int i) { return movieList.get(i); }
+
     static class ViewHolderSearchResults extends RecyclerView.ViewHolder {
         private ImageView moviePoster;
         private TextView movieTitle;
