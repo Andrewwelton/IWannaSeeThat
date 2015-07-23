@@ -26,8 +26,6 @@ public class MovieSelected extends ActionBarActivity {
     private VolleySingleton volleySingleton;
     private ImageLoader imageLoader;
 
-    private ValueAnimator colorAnimation;
-
     private Movie selectedMovie;
 
     @Override
@@ -46,17 +44,6 @@ public class MovieSelected extends ActionBarActivity {
 
         setTitle(selectedMovie.getTitle());
 
-        int colorFrom = getResources().getColor(R.color.primaryColor);
-        int colorTo = getResources().getColor(R.color.transparent);
-        colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(100);
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                toolbar.setBackgroundColor((Integer) animation.getAnimatedValue());
-            }
-        });
-
         String url = "";
         if(selectedMovie.getBackdropImage() != "null") {
             url = ApplicationClass.API_BASE_URL + "w780" + selectedMovie.getBackdropImage();
@@ -70,8 +57,6 @@ public class MovieSelected extends ActionBarActivity {
                     Bitmap temp = response.getBitmap();
                     ImageView backdrop = (ImageView) findViewById(R.id.movie_backdrop);
                     backdrop.setImageBitmap(response.getBitmap());
-                    colorAnimation.start();
-
                 }
 
                 @Override
