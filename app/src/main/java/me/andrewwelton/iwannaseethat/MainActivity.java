@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            drawerLayout.setFitsSystemWindows(false);
-            drawer.setFitsSystemWindows(false);
-        }
         recyclerView = (RecyclerView) findViewById(R.id.drawer_list);
         navListAdapter = new NavListAdapter(this, getData());
         recyclerView.setAdapter(navListAdapter);
