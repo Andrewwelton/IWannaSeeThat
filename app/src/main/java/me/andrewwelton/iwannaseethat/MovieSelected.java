@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -107,6 +108,9 @@ public class MovieSelected extends ActionBarActivity {
 
     }
 
+    public Movie getSelectedMovie() {
+        return selectedMovie;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,10 +125,11 @@ public class MovieSelected extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -149,9 +154,12 @@ public class MovieSelected extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             Bundle arguments = getArguments();
+            MovieRecyclerAdapter adapter =  new MovieRecyclerAdapter(getActivity());
+            //TODO:: Fragment needs selectedMovie, use this object to populate whatever info I want to show to the user.
+            // adapter.setSelectedMovie();
             int pageNumber = arguments.getInt(ARG_PAGE);
             RecyclerView recyclerView = new RecyclerView(getActivity());
-            recyclerView.setAdapter(new MovieRecyclerAdapter(getActivity()));
+            recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             return recyclerView;
         }
@@ -182,6 +190,11 @@ class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieRecyclerViewHolder> {
     private LayoutInflater inflater;
+    private Movie selectedMovie;
+
+    public void setSelectedMovie(Movie movie) {
+        selectedMovie = movie;
+    }
 
     public MovieRecyclerAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -196,12 +209,12 @@ class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.Mov
 
     @Override
     public void onBindViewHolder(MovieRecyclerViewHolder holder, int position) {
-        holder.textView.setText("Hello World!");
+        holder.textView.setText("I Will be an overview!");
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 1;
     }
 
     static class MovieRecyclerViewHolder extends RecyclerView.ViewHolder {

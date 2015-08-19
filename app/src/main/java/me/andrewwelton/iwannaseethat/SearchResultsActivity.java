@@ -3,9 +3,12 @@ package me.andrewwelton.iwannaseethat;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.PersistableBundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -33,10 +36,11 @@ import java.util.ArrayList;
 import me.andrewwelton.iwannaseethat.network.VolleySingleton;
 
 
-public class SearchResultsActivity extends ActionBarActivity {
+public class SearchResultsActivity extends AppCompatActivity {
 
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
+    private SearchResultSingleton searchResultSingleton;
     private ArrayList<Movie> movieResultList = new ArrayList<>();
 
     private RecyclerView movieSearchResults;
@@ -45,12 +49,17 @@ public class SearchResultsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        searchResultSingleton = SearchResultSingleton.getInstance();
         setContentView(R.layout.activity_search_results);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(savedInstanceState != null) {
+           searchResultsAdapter.setMovieList(searchResultSingleton.getSearchResults());
+        }
 
         movieSearchResults = (RecyclerView) findViewById(R.id.movie_results);
         searchResultsAdapter = new SearchResultsAdapter(this);
@@ -77,6 +86,22 @@ public class SearchResultsActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        searchResultsAdapter.setMovieList(searchResultSingleton.getSearchResults());
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(getIntent());
     }
@@ -96,6 +121,7 @@ public class SearchResultsActivity extends ActionBarActivity {
                 public void onResponse(JSONObject response) {
                     parseJSONResponse(response);
                     searchResultsAdapter.setMovieList(movieResultList);
+                    searchResultSingleton.setSearchResults(movieResultList);
                 }
             }, new Response.ErrorListener() {
                 @Override
